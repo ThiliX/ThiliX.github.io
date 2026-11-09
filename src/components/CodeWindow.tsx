@@ -56,7 +56,7 @@ export default function CodeWindow() {
                     {tok.t}
                   </span>
                 ))}
-                {i === lines.length - 1 && <span aria-hidden="true" className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent" />}
+                {i === lines.length - 1 && <span aria-hidden="true" className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent-vivid" />}
               </span>
             </div>
           ))}

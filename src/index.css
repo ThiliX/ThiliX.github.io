@@ -3,8 +3,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: 'Chakra Petch', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Colour tokens. Change the accent here to re-theme the whole site. */
@@ -19,47 +20,76 @@
   --color-subtle: var(--subtle);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
+  --color-accent-vivid: var(--accent-vivid);
   --color-accent-fg: var(--accent-fg);
 }
 
+/*
+ * --accent        text, links and solid buttons (meets WCAG AA contrast)
+ * --accent-vivid  decoration only: dots, bars, underlines, glows (brighter, never used for text in light mode)
+ */
 :root {
-  --bg: #f6f7f9;
+  --bg: #f7f7f8;
   --surface: #ffffff;
-  --surface-2: #eef1f4;
-  --line: rgb(15 23 42 / 0.09);
-  --line-strong: rgb(15 23 42 / 0.17);
-  --fg: #0f172a;
-  --muted: #475569;
-  --subtle: #64748b;
-  --accent: #0b7f68;
-  --accent-strong: #08654f;
+  --surface-2: #f1f2f4;
+  --line: rgb(17 24 39 / 0.09);
+  --line-strong: rgb(17 24 39 / 0.16);
+  --fg: #111318;
+  --muted: #4b5160;
+  --subtle: #6b7180;
+  --accent: #c2410c;
+  --accent-strong: #9a3412;
+  --accent-vivid: #f97316;
   --accent-fg: #ffffff;
-  --grid: rgb(15 23 42 / 0.05);
-  --glow: rgb(11 127 104 / 0.1);
+  --grid: rgb(17 24 39 / 0.05);
+  --glow: rgb(249 115 22 / 0.16);
+  --card-shadow: 0 1px 2px rgb(16 24 40 / 0.04), 0 6px 20px -8px rgb(16 24 40 / 0.1);
+  --cta-shadow: 0 8px 22px -8px rgb(234 88 12 / 0.6);
   --code-key: #7c3aed;
-  --code-str: #0b7f68;
-  --code-num: #c2410c;
+  --code-str: #c2410c;
+  --code-num: #0369a1;
+  /* used by the DotField canvas (space-separated RGB) */
+  --accent-rgb: 249 115 22;
+  --dot-rgb: 30 36 48;
   color-scheme: light;
 }
 
 .dark {
-  --bg: #0a0c0f;
-  --surface: #101318;
-  --surface-2: #161a21;
+  --bg: #0e0f11;
+  --surface: #15171a;
+  --surface-2: #1c1f23;
   --line: rgb(255 255 255 / 0.07);
-  --line-strong: rgb(255 255 255 / 0.15);
-  --fg: #e8ebf0;
-  --muted: #a3abba;
-  --subtle: #737c8c;
-  --accent: #4fd1b5;
-  --accent-strong: #86e3cf;
-  --accent-fg: #03201a;
-  --grid: rgb(255 255 255 / 0.032);
-  --glow: rgb(79 209 181 / 0.09);
+  --line-strong: rgb(255 255 255 / 0.14);
+  --fg: #ececee;
+  --muted: #a1a4ab;
+  --subtle: #7c808a;
+  --accent: #f97316;
+  --accent-strong: #fb8a3c;
+  --accent-vivid: #f97316;
+  --accent-fg: #160a02;
+  --grid: rgb(255 255 255 / 0.035);
+  --glow: rgb(249 115 22 / 0.09);
+  --card-shadow: none;
+  --cta-shadow: none;
   --code-key: #c4b5fd;
-  --code-str: #86e3cf;
-  --code-num: #fdba74;
+  --code-str: #fdba74;
+  --code-num: #7dd3fc;
+  --accent-rgb: 249 115 22;
+  --dot-rgb: 205 210 220;
   color-scheme: dark;
+}
+
+/* Cards lift off the page in light mode; in dark mode borders do the work. */
+@layer base {
+  :where(.border.bg-surface) {
+    box-shadow: var(--card-shadow);
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
 }
 
 html {
@@ -141,4 +171,10 @@ section[id] {
 }
 .caret {
   animation: blink 1.1s steps(1) infinite;
+}
+
+@layer base {
+  .cta-shadow {
+    box-shadow: var(--cta-shadow);
+  }
 }

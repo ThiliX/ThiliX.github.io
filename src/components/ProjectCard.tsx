@@ -37,7 +37,7 @@ function ProjectVisual({ project }: { project: Project }) {
         className="relative font-mono text-5xl font-medium tracking-tight text-fg/80 transition-transform duration-500 group-hover:scale-105"
       >
         {initials}
-        <span className="text-accent">.</span>
+        <span className="text-accent-vivid">.</span>
       </span>
       <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-md border border-line bg-surface/80 px-2 py-1 text-[11px] text-subtle backdrop-blur">
         <ImageIcon className="size-3" aria-hidden="true" /> Screenshot coming soon

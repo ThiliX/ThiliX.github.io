@@ -1,3 +1,4 @@
+import DotField from './components/DotField'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import BackToTop from './components/BackToTop'
@@ -18,6 +19,7 @@ export default function App() {
       >
         Skip to content
       </a>
+      <DotField />
       <Navbar />
       <main id="main">
         <Hero />

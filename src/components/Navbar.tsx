@@ -59,7 +59,7 @@ export default function Navbar() {
                   {item.label}
                   <span
                     aria-hidden="true"
-                    className={`mx-auto mt-0.5 block h-px bg-accent transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}
+                    className={`mx-auto mt-0.5 block h-px bg-accent-vivid transition-all duration-300 ${isActive ? 'w-full' : 'w-0'}`}
                   />
                 </a>
               </li>

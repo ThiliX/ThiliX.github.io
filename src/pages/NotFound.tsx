@@ -1,4 +1,5 @@
 import { ArrowLeft } from 'lucide-react'
+import DotField from '../components/DotField'
 import { ButtonLink } from '../components/Button'
 import { LogoMark } from '../components/BrandIcons'
 import { profile } from '../data/profile'
@@ -6,9 +7,10 @@ import { profile } from '../data/profile'
 export default function NotFound() {
   const path = window.location.pathname
   return (
+    <>
+    <DotField />
     <main className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-4 text-center">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_30%,transparent_100%)]" />
         <div className="bg-glow absolute inset-0" />
       </div>
 
@@ -25,5 +27,6 @@ export default function NotFound() {
         <ArrowLeft className="size-4" aria-hidden="true" /> Back to home
       </ButtonLink>
     </main>
+    </>
   )
 }
