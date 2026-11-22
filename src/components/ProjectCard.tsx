@@ -5,19 +5,31 @@ import { ButtonLink } from './Button'
 import { GitHubIcon } from './BrandIcons'
 
 function ProjectVisual({ project, featured }: { project: Project; featured: boolean }) {
-  const frame = featured ? 'aspect-[16/10] lg:aspect-auto lg:h-full lg:min-h-[340px]' : 'aspect-[16/10]'
+  // Screenshots always keep their 16:10 shape so they are never cropped or upscaled.
+  const frame = 'aspect-[16/10]'
 
   if (project.image) {
-    return (
+    const img = (
       <img
         src={asset(project.image)}
         alt={project.imageAlt ?? `Screenshot of ${project.name}`}
-        width={1280}
-        height={800}
+        width={1600}
+        height={1000}
         loading="lazy"
         decoding="async"
-        className={`${frame} w-full object-cover object-left-top transition-transform duration-500 group-hover:scale-[1.02]`}
+        className={`${frame} w-full object-cover object-left-top transition-transform duration-500 group-hover:scale-[1.02] ${
+          featured ? 'rounded-xl border border-line shadow-2xl shadow-black/20' : ''
+        }`}
       />
+    )
+    // Featured cards centre the screenshot in a tinted panel that fills the column height.
+    return featured ? (
+      <div className="relative flex h-full items-center overflow-hidden bg-surface-2 p-4 sm:p-6">
+        <div aria-hidden="true" className="bg-glow absolute inset-0" />
+        <div className="relative w-full overflow-hidden rounded-xl">{img}</div>
+      </div>
+    ) : (
+      img
     )
   }
 

@@ -51,8 +51,8 @@ export const profile: Profile = {
   ],
   links: {
     github: 'https://github.com/ThiliX',
-    linkedin: null, // TODO: add your LinkedIn profile URL
-    email: null, // TODO: add your email address
+    linkedin: 'https://www.linkedin.com/in/thilix/',
+    email: 'wickramanayakethilina95@gmail.com',
   },
   photo: 'thilina.webp',
   cvUrl: null,

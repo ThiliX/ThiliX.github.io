@@ -48,7 +48,7 @@ export const projects: Project[] = [
       'Production setup: Docker Compose, Caddy auto-HTTPS, OpenTelemetry, backup & restore scripts',
     ],
     tech: ['C#', '.NET', 'EF Core', 'PostgreSQL', 'React', 'TypeScript', 'Tailwind CSS', 'Docker'],
-    image: 'projects/pulsewatch.jpg',
+    image: 'projects/pulsewatch.webp',
     imageAlt: 'PulseWatch dashboard listing monitored APIs with their status, uptime and response times',
     repoUrl: 'https://github.com/ThiliX/pulsewatch',
   },
