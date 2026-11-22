@@ -1,4 +1,4 @@
-import { Brain, Cloud, Code2, Database, LayoutTemplate, Server, Wrench, type LucideProps } from 'lucide-react'
+import { Brain, Cloud, Code2, Database, LayoutTemplate, Server, Smartphone, Wrench, type LucideProps } from 'lucide-react'
 import type { SkillIconName } from '../data/skills'
 
 const icons = {
@@ -9,6 +9,7 @@ const icons = {
   tools: Wrench,
   cloud: Cloud,
   brain: Brain,
+  mobile: Smartphone,
 } satisfies Record<SkillIconName, React.ComponentType<LucideProps>>
 
 export default function SkillIcon({ name, ...props }: { name: SkillIconName } & LucideProps) {

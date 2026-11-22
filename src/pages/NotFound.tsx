@@ -14,7 +14,7 @@ export default function NotFound() {
         <div className="bg-glow absolute inset-0" />
       </div>
 
-      <a href="/" aria-label={`${profile.brand} home`} className="mb-10">
+      <a href={import.meta.env.BASE_URL} aria-label={`${profile.brand} home`} className="mb-10">
         <LogoMark className="size-10" />
       </a>
       <p className="font-mono text-sm text-accent">404</p>
@@ -23,7 +23,7 @@ export default function NotFound() {
       <p className="mt-6 max-w-full truncate rounded-lg border border-line bg-surface px-4 py-2 font-mono text-xs text-subtle">
         GET <span className="text-fg">{path}</span> → <span className="text-accent">404 Not Found</span>
       </p>
-      <ButtonLink href="/" className="mt-10">
+      <ButtonLink href={import.meta.env.BASE_URL} className="mt-10">
         <ArrowLeft className="size-4" aria-hidden="true" /> Back to home
       </ButtonLink>
     </main>

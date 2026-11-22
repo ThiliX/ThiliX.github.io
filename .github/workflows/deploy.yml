@@ -1,0 +1,74 @@
+# Builds the site and publishes it to GitHub Pages on every push to main.
+#
+# The public URL is worked out automatically:
+#   - repository named <user>.github.io  -> https://<user>.github.io/
+#   - any other repository name          -> https://<user>.github.io/<repo>/
+#   - repository variable CUSTOM_DOMAIN  -> https://<CUSTOM_DOMAIN>/  (e.g. thilixretro.com; also writes CNAME)
+#
+# One-time setup: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Work out the site URL
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          CUSTOM_DOMAIN: ${{ vars.CUSTOM_DOMAIN }}
+        run: |
+          owner=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          repo=$(echo "$REPO" | tr '[:upper:]' '[:lower:]')
+          if [ -n "$CUSTOM_DOMAIN" ]; then
+            echo "BASE_PATH=/" >> "$GITHUB_ENV"
+            echo "SITE_URL=https://$CUSTOM_DOMAIN/" >> "$GITHUB_ENV"
+          elif [ "$repo" = "$owner.github.io" ]; then
+            echo "BASE_PATH=/" >> "$GITHUB_ENV"
+            echo "SITE_URL=https://$owner.github.io/" >> "$GITHUB_ENV"
+          else
+            echo "BASE_PATH=/$REPO/" >> "$GITHUB_ENV"
+            echo "SITE_URL=https://$owner.github.io/$REPO/" >> "$GITHUB_ENV"
+          fi
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Add CNAME for a custom domain
+        if: ${{ vars.CUSTOM_DOMAIN != '' }}
+        run: echo "${{ vars.CUSTOM_DOMAIN }}" > dist/CNAME
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

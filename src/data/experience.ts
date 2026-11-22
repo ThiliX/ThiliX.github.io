@@ -20,7 +20,7 @@ export const education: EducationEntry[] = [
     location: 'Sri Lanka',
     notes: [
       'Building foundations in programming, databases and software design.',
-      'Applying coursework through hands-on projects such as Smart Retail Pro and Student Hub.',
+      'Applying coursework through hands-on projects such as the AI module of the TalentIQ team project and mobile apps in Flutter and React Native.',
     ],
   },
 ]
@@ -54,8 +54,8 @@ export const learning: LearningEntry[] = [
   },
   {
     kind: 'Self-learning',
-    title: 'Modern frontend development',
+    title: 'Full-stack & DevOps projects',
     date: 'Ongoing',
-    description: 'Building interfaces with React and Tailwind CSS, and using Git and GitHub to version and share my work.',
+    description: 'Building and shipping my own projects: React and TypeScript interfaces, .NET and Spring Boot APIs, Docker images, GitHub Actions pipelines and Kubernetes deployments.',
   },
 ]

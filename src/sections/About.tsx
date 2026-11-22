@@ -7,7 +7,7 @@ const facts = [
   { icon: GraduationCap, label: 'Studying', value: 'Software Engineering, NSBM Green University' },
   { icon: CalendarCheck, label: 'Expected graduation', value: '2028' },
   { icon: MapPin, label: 'Location', value: profile.location },
-  { icon: Sparkles, label: 'Current focus', value: 'Frontend & web development' },
+  { icon: Sparkles, label: 'Current focus', value: 'Full-stack development, cloud & DevOps' },
 ]
 
 export default function About() {

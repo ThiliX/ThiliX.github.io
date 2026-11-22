@@ -1,7 +1,7 @@
 # ThiliX — Portfolio
 
 Personal portfolio of **Thilina Wickramanayake (ThiliX)**, Software Engineering undergraduate at NSBM Green University.
-Live at **[thilixretro.com](https://thilixretro.com)** (once deployed).
+Hosted free on GitHub Pages; see [Deploying](#deploying-free-on-github-pages).
 
 Built with React 18, TypeScript, Vite, Tailwind CSS v4 and Lucide icons. No animation library: scroll animations use a small `IntersectionObserver` component.
 
@@ -86,15 +86,19 @@ Each project has optional fields. Leave them out and the card shows a clear plac
   summary: 'One or two sentences on what it does.',
   features: ['Inventory tracking', 'Sales reports'],
   tech: ['Java', 'Spring Boot', 'MySQL', 'React'],
-  image: '/projects/smart-retail-pro.webp',  // file in public/projects/
+  year: '2026',
+  featured: false,                            // true = large card at the top (keep to 2–3)
+  image: 'projects/smart-retail-pro.webp',    // file in public/projects/ — no leading slash
   imageAlt: 'Smart Retail Pro dashboard',
   repoUrl: 'https://github.com/ThiliX/your-repo',
   demoUrl: 'https://your-live-demo.example',  // Live demo button only appears when set
+  links: [{ label: 'Docker Hub', href: 'https://hub.docker.com/r/...' }],  // optional extra buttons
 },
 ```
 
-- **Screenshots:** save as `.webp`, about 1280×800 (16:10), under ~200 KB, in `public/projects/`.
-- **Technology filter:** the filter buttons above the projects appear automatically once projects list at least two different technologies in `tech`.
+- **Screenshots:** about 1280×800 (16:10), under ~200 KB, in `public/projects/` (`.webp` or `.jpg`).
+- **Technology filter:** shows every technology used by at least two projects.
+- **Empty `features`:** the Highlights list is simply hidden.
 - **New project:** add another object to the array. The grid adjusts automatically.
 
 ### Education & workshops: `src/data/experience.ts`
@@ -113,34 +117,21 @@ npm run build
 
 The finished static site is in `dist/`. It needs no server-side code, so any static host works.
 
-## Deploying to thilixretro.com
+## Deploying (free, on GitHub Pages)
 
-### Option A: Vercel (recommended, free)
+`.github/workflows/deploy.yml` builds the site and publishes it on every push to `main`.
 
-1. Push this project to a GitHub repository.
-2. On [vercel.com](https://vercel.com), click **Add New → Project** and import the repo. Vercel detects Vite automatically (build: `npm run build`, output: `dist`).
-3. In **Project → Settings → Domains**, add `thilixretro.com` and `www.thilixretro.com`.
-4. At your domain registrar, add the DNS records Vercel shows. Typically:
-   - `A` record: `@` → `76.76.21.21`
-   - `CNAME` record: `www` → `cname.vercel-dns.com`
-5. HTTPS is issued automatically once DNS propagates (minutes to a few hours).
+**One-time setup:** in the GitHub repo, open **Settings → Pages → Build and deployment** and set **Source** to **GitHub Actions**. Push, and the site appears at the URL shown in the **Actions** tab.
 
-Vercel serves `dist/404.html` for unknown URLs automatically.
+The URL depends on the repository name, and the workflow sets the base path, canonical URL, `robots.txt` and `sitemap.xml` to match:
 
-### Option B: Netlify (free)
+| Repository name | Site URL |
+| --- | --- |
+| `ThiliX.github.io` (recommended for a CV) | `https://thilix.github.io/` |
+| anything else, e.g. `coauth` | `https://thilix.github.io/coauth/` |
 
-1. Import the GitHub repo on [netlify.com](https://netlify.com). Build command `npm run build`, publish directory `dist`.
-2. **Domain management → Add a domain** → `thilixretro.com`, then follow the DNS instructions (Netlify DNS, or an `A` record to Netlify's load balancer plus a `www` CNAME).
-3. Netlify uses `404.html` automatically.
+**Custom domain (optional):** add a repository variable `CUSTOM_DOMAIN` (Settings → Secrets and variables → Actions → Variables), e.g. `thilixretro.com`, then in **Settings → Pages** enter the domain. At your registrar add `A` records for `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` and a `CNAME` for `www` → `thilix.github.io`. Tick **Enforce HTTPS** once the certificate is ready.
 
-### Option C: GitHub Pages
+To test a sub-path build locally (PowerShell): `$env:BASE_PATH='/coauth/'; npm run build; npx vite preview --base /coauth/`
 
-1. Create `public/CNAME` containing just `thilixretro.com`.
-2. Build and publish `dist/` with a GitHub Actions workflow ("Static HTML" / Vite template under **Settings → Pages → Build and deployment → GitHub Actions**).
-3. At your registrar, add `A` records for `@` pointing to `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`, and a `CNAME` for `www` → `ThiliX.github.io`.
-4. Tick **Enforce HTTPS** in Pages settings once the certificate is ready.
-
-### After deploying
-
-- The canonical URL, Open Graph URL, `robots.txt` and `sitemap.xml` already point to `https://thilixretro.com/`. Update them if you use a different domain.
-- Submit the sitemap in [Google Search Console](https://search.google.com/search-console) to help the site get indexed.
+After deploying, submit `sitemap.xml` in [Google Search Console](https://search.google.com/search-console) to help the site get indexed.
