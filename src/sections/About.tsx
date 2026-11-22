@@ -1,5 +1,6 @@
 import { CalendarCheck, GraduationCap, MapPin, Sparkles } from 'lucide-react'
 import { profile } from '../data/profile'
+import { asset } from '../lib/asset'
 import Section from '../components/Section'
 import Reveal from '../components/Reveal'
 
@@ -21,6 +22,21 @@ export default function About() {
         </Reveal>
 
         <Reveal delay={100} className="space-y-6">
+          {profile.photo && (
+            <figure className="relative mx-auto max-w-xs lg:max-w-none">
+              <div aria-hidden="true" className="absolute -inset-2 -z-10 rounded-3xl bg-accent/15 blur-2xl" />
+              <img
+                src={asset(profile.photo)}
+                alt={`Portrait of ${profile.name}`}
+                width={640}
+                height={800}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[4/5] w-full rounded-2xl border border-line-strong object-cover object-top"
+              />
+            </figure>
+          )}
+
           <dl className="divide-y divide-line rounded-2xl border border-line bg-surface">
             {facts.map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-start gap-4 p-5">

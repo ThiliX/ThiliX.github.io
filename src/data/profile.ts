@@ -17,6 +17,8 @@ export interface Profile {
     linkedin: string | null
     email: string | null
   }
+  /** Portrait in /public, without a leading slash (e.g. 'thilina.webp'). Set to null to hide it. */
+  photo: string | null
   /** Path to a CV in /public (e.g. '/Thilina-Wickramanayake-CV.pdf'). The download button appears only when set. */
   cvUrl: string | null
   /**
@@ -52,6 +54,7 @@ export const profile: Profile = {
     linkedin: null, // TODO: add your LinkedIn profile URL
     email: null, // TODO: add your email address
   },
+  photo: 'thilina.webp',
   cvUrl: null,
   formEndpoint: null,
 }
