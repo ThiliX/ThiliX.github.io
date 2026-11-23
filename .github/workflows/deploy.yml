@@ -55,6 +55,25 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      # Browsers may keep a cached index.html for up to 10 minutes, and it points at the
+      # previous build's hashed files. Re-publish the files from the last few deploys so a
+      # cached page never loads without its CSS/JS.
+      - name: Keep assets from recent deploys
+        run: |
+          keep=3   # previous deploys to keep, besides this one
+          history=$(curl -fsSL "${SITE_URL}asset-history.txt" 2>/dev/null || true)
+          if [ -z "$history" ]; then
+            # First run with this step: fall back to whatever the live page references.
+            history=$(curl -fsSL "$SITE_URL" 2>/dev/null | grep -oE 'assets/[A-Za-z0-9._-]+\.(js|css)' | sort -u | tr '\n' ' ' || true)
+          fi
+          current=$(cd dist && ls assets/* | tr '\n' ' ')
+          { echo "$current"; echo "$history" | head -n "$keep"; } | sed '/^ *$/d' > dist/asset-history.txt
+          for f in $(tail -n +2 dist/asset-history.txt | tr ' ' '\n' | sort -u); do
+            [ -e "dist/$f" ] && continue
+            if curl -fsSL "${SITE_URL}${f}" -o "dist/$f"; then echo "kept $f"; else rm -f "dist/$f"; fi
+          done
+          cat dist/asset-history.txt
+
       - name: Add CNAME for a custom domain
         if: ${{ vars.CUSTOM_DOMAIN != '' }}
         run: echo "${{ vars.CUSTOM_DOMAIN }}" > dist/CNAME
