@@ -25,6 +25,7 @@ This repository is the source of my portfolio site, which I designed, built and 
 | Project | Highlights |
 |---|---|
 | [**PulseWatch**](https://github.com/ThiliX/pulsewatch) | Self-hostable API monitoring with incidents, email alerts, uptime/p95 dashboards and four-layer SSRF protection. .NET, PostgreSQL, React, Docker. |
+| [**Servora**](https://github.com/ThiliX/Servora) | Multi-tenant AI customer-support platform: cited answers from each business's documents, PostgreSQL Row-Level Security isolation and race-free AI-to-human handoff. Spring Boot, FastAPI, pgvector, React. |
 | [**TalentIQ**](https://github.com/TalentIq-team/talentIQ) | AI-assisted recruitment platform (team of 6). I owned the AI module: Gemini résumé matching, fallback scoring and the screening UI. |
 | [**ThiliX's Portfolio XP**](https://github.com/ThiliX/Retro-Computer) | Portfolio that boots like an early-2000s PC: log-on screen, draggable windows, Start menu and built-in apps (terminal, Paint, synth, AI chat), built with React. [▶ Live demo](https://thilix.github.io/Retro-Computer/) |
 | [**DevOps Pipeline Practical**](https://github.com/ThiliX/devops-practical) | Flask app through CI, Docker Hub, Kubernetes (2 replicas) and a self-healing chaos test. |

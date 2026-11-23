@@ -1,12 +1,64 @@
+import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, ExternalLink, Star } from 'lucide-react'
 import type { Project } from '../data/projects'
 import { asset } from '../lib/asset'
 import { ButtonLink } from './Button'
 import { GitHubIcon } from './BrandIcons'
 
+/**
+ * Muted, looping demo clip. It only downloads and plays while on screen, and pauses when
+ * scrolled away. Reduced-motion visitors see the poster and can press play themselves.
+ */
+function ProjectVideo({ project }: { project: Project }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video || reduced) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) void video.play().catch(() => {})
+        else video.pause()
+      },
+      { threshold: 0.35 },
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [reduced])
+
+  return (
+    <video
+      ref={ref}
+      src={asset(project.video!)}
+      poster={project.image ? asset(project.image) : undefined}
+      aria-label={project.imageAlt ?? `Demo of ${project.name}`}
+      width={1920}
+      height={1080}
+      muted
+      loop
+      playsInline
+      preload="none"
+      controls={reduced}
+      className="aspect-video w-full rounded-xl border border-line bg-surface-2 object-cover shadow-2xl shadow-black/20"
+    />
+  )
+}
+
 function ProjectVisual({ project, featured }: { project: Project; featured: boolean }) {
   // Screenshots always keep their 16:10 shape so they are never cropped or upscaled.
   const frame = 'aspect-[16/10]'
+
+  if (project.video) {
+    return (
+      <div className="relative flex h-full items-center overflow-hidden bg-surface-2 p-4 sm:p-6">
+        <div aria-hidden="true" className="bg-glow absolute inset-0" />
+        <div className="relative w-full">
+          <ProjectVideo project={project} />
+        </div>
+      </div>
+    )
+  }
 
   if (project.image) {
     const img = (

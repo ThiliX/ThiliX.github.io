@@ -7,6 +7,8 @@
  * - `image`: put screenshots in /public/projects/ and reference them WITHOUT a leading slash,
  *   e.g. 'projects/file.jpg' (so the site also works when hosted under a sub-path like /repo-name/).
  *   Use roughly 16:10 images (e.g. 1280×800), ideally under ~200 KB.
+ * - `video`: an optional MP4 shown instead of the image (muted, looping, plays while on screen).
+ *   `image` is then used as its poster, and is all that reduced-motion visitors see until they press play.
  * - The technology filter shows every technology used by at least two projects.
  */
 export interface ProjectLink {
@@ -25,6 +27,8 @@ export interface Project {
   featured?: boolean
   image?: string
   imageAlt?: string
+  /** Short muted demo clip (MP4) shown in place of the image; `image` becomes its poster. */
+  video?: string
   repoUrl?: string
   demoUrl?: string
   /** Extra buttons, e.g. a second repository or a Docker Hub image. */
@@ -51,6 +55,28 @@ export const projects: Project[] = [
     image: 'projects/pulsewatch.webp',
     imageAlt: 'PulseWatch dashboard listing monitored APIs with their status, uptime and response times',
     repoUrl: 'https://github.com/ThiliX/pulsewatch',
+  },
+  {
+    id: 'servora',
+    name: 'Servora',
+    category: 'Full-stack · AI · Multi-tenant SaaS',
+    year: '2026',
+    featured: true,
+    summary:
+      "A multi-tenant AI customer-support platform. Each business gets an isolated workspace: an assistant that answers customers only from that business's documents and cites them, an embeddable chat widget, and a team inbox where a person takes over when the assistant shouldn't answer.",
+    features: [
+      'Grounded answers: every citation is checked against the retrieved passages; with weak evidence the customer gets a person, not a guess',
+      'Measured on a live model: 87% of answerable questions answered from the right document, 0 of 10 out-of-scope questions answered',
+      'Tenant isolation enforced twice, in the application and by PostgreSQL Row-Level Security, with a cross-tenant test matrix over every endpoint',
+      'Race-free AI-to-human handoff: once an agent takes over, a reply still being generated is never delivered',
+      'Production-minded: hardened containers, OpenTelemetry traces across services, backups with a restore drill, Playwright and WCAG 2.1 AA checks',
+    ],
+    tech: ['Java', 'Spring Boot', 'Python', 'FastAPI', 'PostgreSQL', 'pgvector', 'React', 'TypeScript', 'Docker', 'OpenTelemetry'],
+    image: 'projects/servora-poster.webp',
+    video: 'projects/servora-demo.mp4',
+    imageAlt:
+      "Servora demo: a customer on a demo shop's website asks about returns and gets an answer citing the shop's returns policy, asks for a person, and an agent takes over and replies from the team inbox",
+    repoUrl: 'https://github.com/ThiliX/Servora',
   },
   {
     id: 'retro-computer',
