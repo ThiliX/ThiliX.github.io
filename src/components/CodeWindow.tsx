@@ -168,7 +168,7 @@ export default function CodeWindow() {
         <span className="size-2.5 rounded-full bg-fg/15" />
         <span className="ml-3 font-mono text-xs text-subtle">thilix.ts</span>
       </div>
-      <pre className="overflow-x-auto p-5 font-mono text-[12.5px] leading-6 text-muted sm:text-[13px]">
+      <pre className="overflow-hidden p-5 font-mono text-[12.5px] leading-6 text-muted sm:text-[13px]">
         {/* Screen readers get the full text at once; the typing is visual only. */}
         <span className="sr-only">{plainText}</span>
         <code aria-hidden="true">
@@ -176,7 +176,8 @@ export default function CodeWindow() {
             return (
               <div key={i} className="flex">
                 <span className="mr-5 w-4 shrink-0 text-right text-subtle/60 select-none">{i + 1}</span>
-                <span className="whitespace-pre">
+                {/* Long lines soft-wrap like an editor, with continuation lines indented, instead of scrolling. */}
+                <span className="min-w-0 pl-[4ch] break-words whitespace-pre-wrap [text-indent:-4ch]">
                   <CodeLine index={i} progress={progress} caretCol={i === cursor.line ? cursor.col : null} />
                 </span>
               </div>
