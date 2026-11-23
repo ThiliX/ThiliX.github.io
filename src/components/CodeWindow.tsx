@@ -35,50 +35,53 @@ const colour: Record<NonNullable<Token['c']>, string> = {
 const lineText = lines.map((line) => line.map((tok) => tok.t).join(''))
 const plainText = lineText.join('\n')
 
-const START_DELAY = 500 // ms before typing begins
-const CHAR_DELAY = 22 // ms per character
-const LINE_DELAY = 160 // pause before starting the next line
+const START_DELAY = 300 // ms before typing begins
+const TYPE_DURATION = 1500 // ms to type everything
 
 type Cursor = { line: number; col: number }
-const END: Cursor = { line: lines.length - 1, col: lineText[lines.length - 1].length }
 
 const indentOf = (s: string) => s.length - s.trimStart().length
 
-/** Types the code once when the page loads; skipped for reduced-motion users. */
+// Every caret position, in typing order. Indentation and blank lines are skipped,
+// like an editor's auto-indent, so each step adds one visible character.
+const steps: Cursor[] = [{ line: 0, col: 0 }]
+lineText.forEach((text, line) => {
+  if (text.length === 0) return
+  for (let col = indentOf(text); col <= text.length; col++) {
+    if (line > 0 || col > 0) steps.push({ line, col })
+  }
+})
+const LAST = steps.length - 1
+
+/** Types the code once when the page loads, in a fixed time; skipped for reduced-motion users. */
 function useTyping() {
-  const [cursor, setCursor] = useState<Cursor>(() =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches ? END : { line: 0, col: 0 },
+  const [step, setStep] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ? LAST : 0,
   )
-  const done = cursor.line === END.line && cursor.col === END.col
 
   useEffect(() => {
-    if (done) return
-    let { line, col } = cursor
-    let timer: number
+    if (step >= LAST) return
+    let frame = 0
+    let start = 0
 
-    const step = () => {
-      if (col < lineText[line].length) {
-        col += 1
-        setCursor({ line, col })
-        timer = window.setTimeout(step, CHAR_DELAY)
-      } else if (line < lines.length - 1) {
-        line += 1
-        // Skip blank lines straight away.
-        while (lineText[line].length === 0 && line < lines.length - 1) line += 1
-        // Indentation appears instantly, like an editor's auto-indent.
-        col = indentOf(lineText[line])
-        setCursor({ line, col })
-        timer = window.setTimeout(step, LINE_DELAY)
-      }
+    // Time-based rather than per-character timers, so it always finishes on schedule.
+    const tick = (now: number) => {
+      start ||= now
+      const progress = Math.min(1, (now - start) / TYPE_DURATION)
+      setStep(Math.round(progress * LAST))
+      if (progress < 1) frame = requestAnimationFrame(tick)
     }
 
-    timer = window.setTimeout(step, START_DELAY)
-    return () => window.clearTimeout(timer)
-    // Runs once on mount; the loop keeps its own position.
+    const timer = window.setTimeout(() => (frame = requestAnimationFrame(tick)), START_DELAY)
+    return () => {
+      window.clearTimeout(timer)
+      cancelAnimationFrame(frame)
+    }
+    // Runs once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { cursor, done }
+  return { cursor: steps[step], done: step >= LAST }
 }
 
 function Caret({ blink }: { blink: boolean }) {
