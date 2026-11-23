@@ -32,7 +32,7 @@ export default function Projects() {
       index="03"
       eyebrow="Projects"
       title="Things I've built"
-      lead="From a self-hostable monitoring tool to a 3D web experience. Each project links to its source code, and live demos where available."
+      lead="From a self-hostable monitoring tool to a portfolio that boots like a 2000s PC. Each project links to its source code, and live demos where available."
     >
       {showFilter && (
         <Reveal className="mb-8">
